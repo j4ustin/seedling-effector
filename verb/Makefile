@@ -7,6 +7,7 @@ CPP_SOURCES = verb.cpp
 # Library Locations
 LIBDAISY_DIR = ../libdaisy
 DAISYSP_DIR = ../DaisySP
+BREAD_DIR = ../breadboard
 
 # Core location, and generic makefile.
 SYSTEM_FILES_DIR = $(LIBDAISY_DIR)/core

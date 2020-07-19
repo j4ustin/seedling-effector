@@ -1,14 +1,38 @@
-#include "daisy_seed.h"
+#include "daisy_bread.h"
 #include "daisysp.h"
 
 using namespace daisy;
 using namespace daisysp;
 
-DaisySeed hardware;
-ReverbSc verb;
+static DaisyBread hardware;
+static ReverbSc verb;
+
+float currentDelay, feedback, delayTarget, cutoff; 
 
 // use the button to activate the verb
 Switch button1;
+
+void Controls();
+
+void AudioCallback(float *in, float *out, size_t size) 
+{
+    float outl, outr, inl, inr; 
+
+    Controls();
+
+    for (size_t i = 0; i < size; i += 2) 
+    {   
+        // fetch the incoming sample
+        inl = in[i];
+        inr = in[i + 1];
+
+        verb.Process(inl, inr, &outl, &outr);        
+        
+        // output samples 
+        out[i] = outl;
+        out[i + 1] = outr;
+    }
+}
 
 int main(void)
 {
@@ -19,7 +43,16 @@ int main(void)
     // fetch sample per second
     float samplerate = hardware.AudioSampleRate();
 
-    // create adc configuration  
+    // add knob controls
     AdcChannelConfig adcConfig;
-    // add stereo input channels (16,17)
+    adcConfig.InitSingle(hardware.GetPin(21));
+    adcConfig.InitSingle(hardware.GetPin(22));
+}
+
+void Controls() 
+{
+    float k1, k2, k3, k4;
+    delayTarget = feedbac = drywet = 0;
+    
+    
 }
